@@ -268,7 +268,7 @@ public class AddFoodController {
                 stmt.setDouble(5, item.getCarbs());
                 stmt.setDouble(6, item.getFat());
                 stmt.setString(7, item.getMealType());
-                stmt.setDate(8, java.sql.Date.valueOf(entryDate));
+                stmt.setString(8, entryDate.toString());
                 stmt.addBatch();
             }
 
@@ -336,7 +336,7 @@ public class AddFoodController {
         stmt.setDouble(5, carbs);
         stmt.setDouble(6, fats);
         stmt.setString(7, mealType);
-        stmt.setDate(8, java.sql.Date.valueOf(entryDatePicker.getValue()));
+        stmt.setString(8, entryDatePicker.getValue().toString());
 
         stmt.executeUpdate();
 
@@ -366,7 +366,7 @@ public class AddFoodController {
         stmt.setDouble(4, carbs);
         stmt.setDouble(5, fats);
         stmt.setString(6, mealType);
-        stmt.setDate(7, java.sql.Date.valueOf(entryDatePicker.getValue()));
+        stmt.setString(7, entryDatePicker.getValue().toString());
         stmt.setInt(8, editingEntryId);
         stmt.setInt(9, userId);
 
