@@ -5,55 +5,116 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controller.AddFoodController"
-      spacing="14"
-      style="-fx-background-color: #eef4f8; -fx-padding: 25;">
+<ScrollPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.AddFoodController"
+            fitToWidth="true"
+            style="-fx-background-color: #eef4f8;">
 
-    <children>
+    <content>
+        <VBox spacing="14"
+              style="-fx-background-color: #eef4f8; -fx-padding: 25;">
 
-        <Label text="Add Food"
-               style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1f3349;" />
+            <children>
 
-        <TextField fx:id="foodNameField"
-                   promptText="Food Name" />
+                <Label text="Add Food"
+                       style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1f3349;" />
 
-        <TextField fx:id="caloriesField"
-                   promptText="Calories" />
+                <!-- AI-assisted natural-language logging -->
 
-        <TextField fx:id="proteinField"
-                   promptText="Protein (g)" />
+                <Label text="Describe a meal and let AI fill in the macros"
+                       style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #1f3349;" />
 
-        <TextField fx:id="carbsField"
-                   promptText="Carbs (g)" />
+                <TextArea fx:id="mealDescriptionField"
+                          promptText="e.g. 2 eggs, a slice of toast, and a cup of black coffee"
+                          prefRowCount="2"
+                          wrapText="true" />
 
-        <TextField fx:id="fatsField"
-                   promptText="Fats (g)" />
+                <HBox spacing="10">
+                    <children>
+                        <Button fx:id="parseAiButton"
+                                text="Parse with AI"
+                                onAction="#handleParseWithAi"
+                                style="-fx-background-color: #1f3349; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                    </children>
+                </HBox>
 
-        <ComboBox fx:id="mealTypeComboBox"
-                  promptText="Select Meal Type" />
+                <TableView fx:id="parsedItemsTable" editable="true" prefHeight="160">
+                    <columns>
+                        <TableColumn fx:id="parsedFoodNameColumn" text="Food Name" prefWidth="180" />
+                        <TableColumn fx:id="parsedCaloriesColumn" text="Calories" prefWidth="90" />
+                        <TableColumn fx:id="parsedProteinColumn" text="Protein" prefWidth="90" />
+                        <TableColumn fx:id="parsedCarbsColumn" text="Carbs" prefWidth="90" />
+                        <TableColumn fx:id="parsedFatColumn" text="Fat" prefWidth="90" />
+                        <TableColumn fx:id="parsedMealTypeColumn" text="Meal" prefWidth="110" />
+                    </columns>
+                </TableView>
 
-        <DatePicker fx:id="entryDatePicker" />
+                <HBox spacing="10">
+                    <children>
+                        <Button fx:id="addAllButton"
+                                text="Add All to Log"
+                                onAction="#handleAddAllParsed"
+                                style="-fx-background-color: #10c64a; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                    </children>
+                </HBox>
 
-        <Label fx:id="messageLabel"
-               text=""
-               style="-fx-text-fill: #d62839; -fx-font-size: 13px;" />
+                <Label fx:id="messageLabel"
+                       text=""
+                       wrapText="true"
+                       style="-fx-text-fill: #d62839; -fx-font-size: 13px;" />
 
-        <Button text="Save Food"
-                onAction="#handleSaveFood"
-                style="-fx-background-color: #10c64a; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                <Separator />
 
-        <Button text="Back to Dashboard"
-                onAction="#handleBackToDashboard"
-                style="-fx-background-color: #dbe4ec; -fx-text-fill: #1f3349; -fx-font-size: 14px;" />
+                <!-- Manual entry (unchanged) -->
 
-    </children>
+                <Label text="Or enter a single food manually"
+                       style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #1f3349;" />
 
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
-</VBox>
+                <TextField fx:id="foodNameField"
+                           promptText="Food Name" />
+
+                <TextField fx:id="caloriesField"
+                           promptText="Calories" />
+
+                <TextField fx:id="proteinField"
+                           promptText="Protein (g)" />
+
+                <TextField fx:id="carbsField"
+                           promptText="Carbs (g)" />
+
+                <TextField fx:id="fatsField"
+                           promptText="Fats (g)" />
+
+                <ComboBox fx:id="mealTypeComboBox"
+                          promptText="Select Meal Type" />
+
+                <DatePicker fx:id="entryDatePicker" />
+
+                <Button text="Save Food"
+                        onAction="#handleSaveFood"
+                        style="-fx-background-color: #10c64a; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" />
+
+                <Button text="Back to Dashboard"
+                        onAction="#handleBackToDashboard"
+                        style="-fx-background-color: #dbe4ec; -fx-text-fill: #1f3349; -fx-font-size: 14px;" />
+
+            </children>
+
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+        </VBox>
+    </content>
+
+</ScrollPane>

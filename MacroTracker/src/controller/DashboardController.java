@@ -68,11 +68,11 @@ public class DashboardController {
                 "   COALESCE(SUM(carbs), 0) AS total_carbs, " +
                 "   COALESCE(SUM(fats), 0) AS total_fats " +
                 " FROM food_entries " +
-                " WHERE user_id = ? AND entry_date = CURDATE()) f " +
+                " WHERE user_id = ? AND entry_date = DATE('now')) f " +
                 "CROSS JOIN " +
                 "(SELECT COALESCE(SUM(calories_burned), 0) AS total_burned " +
                 " FROM calories_burned " +
-                " WHERE user_id = ? AND burned_date = CURDATE()) b";
+                " WHERE user_id = ? AND burned_date = DATE('now')) b";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -142,7 +142,7 @@ public class DashboardController {
     private void loadCaloriesBurned() {
         String sql = "SELECT COALESCE(SUM(calories_burned), 0) AS total_burned " +
                      "FROM calories_burned " +
-                     "WHERE user_id = ? AND burned_date = CURDATE()";
+                     "WHERE user_id = ? AND burned_date = DATE('now')";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -165,7 +165,7 @@ public class DashboardController {
     private void loadLatestFood() {
         String sql = "SELECT food_name, meal_type, calories, protein, carbs, fats " +
                      "FROM food_entries " +
-                     "WHERE user_id = ? AND entry_date = CURDATE() " +
+                     "WHERE user_id = ? AND entry_date = DATE('now') " +
                      "ORDER BY entry_id DESC LIMIT 1";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -204,7 +204,7 @@ public class DashboardController {
 
         String sql = "SELECT food_name, calories, protein, carbs, fats " +
                      "FROM food_entries " +
-                     "WHERE user_id = ? AND entry_date = CURDATE() AND meal_type = ? " +
+                     "WHERE user_id = ? AND entry_date = DATE('now') AND meal_type = ? " +
                      "ORDER BY entry_id DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -245,7 +245,7 @@ public class DashboardController {
         try {
             int burned = Integer.parseInt(input.trim());
 
-            String sql = "INSERT INTO calories_burned (user_id, calories_burned, burned_date) VALUES (?, ?, CURDATE())";
+            String sql = "INSERT INTO calories_burned (user_id, calories_burned, burned_date) VALUES (?, ?, DATE('now'))";
 
             try (Connection conn = DatabaseConnection.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -268,7 +268,7 @@ public class DashboardController {
 
     @FXML
     private void handleRefresh() {
-        String sql = "DELETE FROM calories_burned WHERE user_id = ? AND burned_date = CURDATE()";
+        String sql = "DELETE FROM calories_burned WHERE user_id = ? AND burned_date = DATE('now')";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -286,8 +286,8 @@ public class DashboardController {
 
     @FXML
     private void handleResetDay() {
-        String deleteFoodSql = "DELETE FROM food_entries WHERE user_id = ? AND entry_date = CURDATE()";
-        String deleteBurnedSql = "DELETE FROM calories_burned WHERE user_id = ? AND burned_date = CURDATE()";
+        String deleteFoodSql = "DELETE FROM food_entries WHERE user_id = ? AND entry_date = DATE('now')";
+        String deleteBurnedSql = "DELETE FROM calories_burned WHERE user_id = ? AND burned_date = DATE('now')";
 
         try (Connection conn = DatabaseConnection.getConnection()) {
             conn.setAutoCommit(false);

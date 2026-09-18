@@ -50,11 +50,11 @@ public class SetGoalsController {
 
             String sql = "INSERT INTO goals (user_id, calories_goal, protein_goal, carbs_goal, fat_goal) "
                     + "VALUES (?, ?, ?, ?, ?) "
-                    + "ON DUPLICATE KEY UPDATE "
-                    + "calories_goal = VALUES(calories_goal), "
-                    + "protein_goal = VALUES(protein_goal), "
-                    + "carbs_goal = VALUES(carbs_goal), "
-                    + "fat_goal = VALUES(fat_goal)";
+                    + "ON CONFLICT(user_id) DO UPDATE SET "
+                    + "calories_goal = excluded.calories_goal, "
+                    + "protein_goal = excluded.protein_goal, "
+                    + "carbs_goal = excluded.carbs_goal, "
+                    + "fat_goal = excluded.fat_goal";
 
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userId);
